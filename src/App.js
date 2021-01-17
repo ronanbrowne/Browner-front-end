@@ -1,25 +1,43 @@
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    isLoading: true,
+    groups: []
+  };
+
+  async componentDidMount() {
+    const response = await fetch('/api/hello');
+    const body = await response.text()
+    alert (body)
+    this.setState({ groups: body, isLoading: false });
+  }
+
+
+  render() {
+    const {groups, isLoading} = this.state;
+
+    if (isLoading) {
+      return <p>Loading...</p>;
+    }
+
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <div className="App-intro">
+            <h2>From back-end</h2>
+              <div key="1">
+                {groups}
+              </div>
+            
+          </div>
+        </header>
+      </div>
+    );
+  }
 }
 
 export default App;
